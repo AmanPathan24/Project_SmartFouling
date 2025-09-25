@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Submarine Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid #22c55e;
+        }
+        .error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+        }
+        .info {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid #3b82f6;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚢 3D Submarine Visualization Test</h1>
+        
+        <div class="test-section">
+            <h2>Backend API Tests</h2>
+            <div id="api-tests"></div>
+            <button onclick="testAPIs()">Test APIs</button>
+        </div>
+
+        <div class="test-section">
+            <h2>Frontend Access</h2>
+            <div class="info status">
+                <strong>Frontend URL:</strong> <a href="http://localhost:3000" target="_blank" style="color: #60a5fa;">http://localhost:3000</a>
+            </div>
+            <div class="info status">
+                <strong>3D Viewer Tab:</strong> Click on "3D View" in the navigation
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>Expected Features</h2>
+            <ul>
+                <li>✅ Interactive 3D submarine model with Three.js</li>
+                <li>✅ Heat map visualization (green → yellow → red)</li>
+                <li>✅ Area ratio data from backend</li>
+                <li>✅ Orbit controls (rotate, zoom, pan)</li>
+                <li>✅ Legend and data display</li>
+                <li>✅ Responsive design</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2>Area Ratio Data</h2>
+            <div id="area-ratios"></div>
+            <button onclick="loadAreaRatios()">Load Sample Data</button>
+        </div>
+    </div>
+
+    <script>
+        async function testAPIs() {
+            const container = document.getElementById('api-tests');
+            container.innerHTML = '<div class="info status">Testing APIs...</div>';
+
+            const tests = [
+                {
+                    name: 'Backend Health',
+                    url: 'http://localhost:8000/api/health',
+                    expected: 200
+                },
+                {
+                    name: 'Submarine Model',
+                    url: 'http://localhost:8000/api/models/submarine.glb',
+                    expected: 200
+                },
+                {
+                    name: 'Area Ratios (Mock)',
+                    url: 'http://localhost:8000/api/sessions/test_session/area-ratios',
+                    expected: 200
+                }
+            ];
+
+            let results = '';
+            
+            for (const test of tests) {
+                try {
+                    const response = await fetch(test.url, { method: 'HEAD' });
+                    const status = response.status === test.expected ? 'success' : 'error';
+                    const icon = response.status === test.expected ? '✅' : '❌';
+                    results += `<div class="${status} status">${icon} ${test.name}: ${response.status}</div>`;
+                } catch (error) {
+                    results += `<div class="error status">❌ ${test.name}: Failed - ${error.message}</div>`;
+                }
+            }
+
+            container.innerHTML = results;
+        }
+
+        async function loadAreaRatios() {
+            const container = document.getElementById('area-ratios');
+            container.innerHTML = '<div class="info status">Loading area ratios...</div>';
+
+            try {
+                const response = await fetch('http://localhost:8000/api/sessions/test_session/area-ratios');
+                const data = await response.json();
+                
+                let html = '<div class="success status">✅ Area ratios loaded successfully</div>';
+                html += '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                
+                container.innerHTML = html;
+            } catch (error) {
+                container.innerHTML = `<div class="error status">❌ Failed to load area ratios: ${error.message}</div>`;
+            }
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', () => {
+            testAPIs();
+            loadAreaRatios();
+        });
+    </script>
+</body>
+</html>

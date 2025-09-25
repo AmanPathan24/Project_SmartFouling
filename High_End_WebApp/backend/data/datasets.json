@@ -1,0 +1,40 @@
+{
+  "hull_inspection_2024": {
+    "name": "Hull Inspection 2024",
+    "description": "Quarterly hull inspection images from 2024",
+    "images": [
+      {
+        "filename": "hull1_original.jpg",
+        "path": "demo/hull1_original.jpg"
+      },
+      {
+        "filename": "hull2_original.jpg",
+        "path": "demo/hull2_original.jpg"
+      },
+      {
+        "filename": "prop_original.jpg",
+        "path": "demo/prop_original.jpg"
+      },
+      {
+        "filename": "starboard_original.jpg",
+        "path": "demo/starboard_original.jpg"
+      }
+    ],
+    "created_at": "2024-01-15T10:00:00Z"
+  },
+  "port_side_analysis": {
+    "name": "Port Side Analysis",
+    "description": "Detailed port side fouling analysis",
+    "images": [
+      {
+        "filename": "port_bow.jpg",
+        "path": "demo/hull1_original.jpg"
+      },
+      {
+        "filename": "port_midship.jpg",
+        "path": "demo/hull2_original.jpg"
+      }
+    ],
+    "created_at": "2024-02-01T14:30:00Z"
+  }
+}

@@ -1,0 +1,165 @@
+# Advanced Marine Fouling Optimized Configuration
+# This configuration includes all advanced preprocessing techniques for optimal underwater image enhancement
+
+processing_mode: "full_pipeline"
+logging_level: "INFO"
+random_seed: 42
+
+preprocessing:
+  # Basic CLAHE parameters - optimized for underwater contrast
+  clahe_clip_limit: 4.0
+  clahe_tile_grid_size: [6, 6]
+  
+  # Retinex parameters - adjusted for marine lighting conditions
+  retinex_sigma_list: [20, 100, 300]
+  retinex_low_clip: 0.01
+  retinex_high_clip: 0.99
+  
+  # Noise reduction
+  gaussian_blur_sigma: 0.8
+  bilateral_d: 9
+  bilateral_sigma_color: 75
+  bilateral_sigma_space: 75
+  
+  # Enhancement parameters
+  gamma_correction: 1.3
+  sharpening_strength: 0.7
+  
+  # Output parameters
+  output_size: null  # Keep original size
+  normalize_output: true
+  
+  # Processing order with advanced techniques
+  preprocessing_order:
+    - "noise_reduction"
+    - "advanced_white_balance"
+    - "homomorphic_filtering"
+    - "color_correction"
+    - "lighting_enhancement"
+    - "contrast_enhancement"
+    - "gabor_enhancement"
+    - "multiscale_enhancement"
+    - "morphological_enhancement"
+    - "sharpening"
+    - "resize"
+    - "normalization"
+  
+  # Advanced processing control
+  enable_advanced_processing: true
+  advanced_steps:
+    homomorphic_filtering: true
+    advanced_white_balance: true
+    dark_channel_prior: false  # Computationally intensive
+    gabor_enhancement: true
+    multiscale_enhancement: true
+    morphological_enhancement: true
+    histogram_specification: false
+
+advanced_preprocessing:
+  # Homomorphic filtering - separates illumination and reflectance
+  homomorphic_gamma_h: 2.2  # High frequency gain
+  homomorphic_gamma_l: 0.3   # Low frequency gain
+  homomorphic_c: 1.0         # Filter sharpness
+  homomorphic_d0: 15.0       # Cutoff frequency
+  
+  # Advanced white balance correction
+  wb_method: "max_white"  # Options: gray_world, max_white, perfect_reflector
+  wb_percentile: 98       # Percentile for max_white method
+  wb_clip_limit: 0.01
+  
+  # Dark Channel Prior for haze removal (disabled by default due to computational cost)
+  dcp_patch_size: 15
+  dcp_omega: 0.95
+  dcp_t0: 0.1
+  dcp_guided_eps: 0.001
+  dcp_guided_radius: 60
+  
+  # Gabor filters for texture enhancement - optimized for fouling patterns
+  gabor_frequencies: [0.05, 0.15, 0.3, 0.5]           # Multiple scales for different fouling sizes
+  gabor_angles: [0, 30, 60, 90, 120, 150]             # Multiple orientations
+  gabor_sigma_x: 2.0
+  gabor_sigma_y: 2.0
+  gabor_enhancement_strength: 0.4
+  
+  # Multi-scale pyramid enhancement
+  pyramid_levels: 5                    # Number of pyramid levels
+  detail_enhancement_factor: 1.8       # Detail amplification factor
+  edge_enhancement_factor: 1.4         # Edge enhancement factor
+  
+  # Morphological operations for boundary enhancement
+  morphology_kernel_size: 5
+  morphology_operations: ["opening", "closing", "gradient"]
+  boundary_enhancement_strength: 0.5
+  
+  # Advanced processing control flags
+  enable_advanced_processing: true
+  advanced_steps:
+    homomorphic_filtering: true
+    advanced_white_balance: true
+    dark_channel_prior: false  # Too computationally intensive for real-time
+    gabor_enhancement: true
+    multiscale_enhancement: true
+    morphological_enhancement: true
+    histogram_specification: false
+
+augmentation:
+  # Geometric transformations
+  rotate_limit: 30
+  shift_limit: 0.1
+  scale_limit: 0.2
+  distortion_limit: 0.1
+  
+  # Color and lighting
+  brightness_limit: 0.3
+  contrast_limit: 0.3
+  saturation_limit: 0.2
+  hue_shift_limit: 20
+  
+  # Noise and blur
+  gaussian_noise_var: [10.0, 50.0]
+  motion_blur_limit: 7
+  gaussian_blur_limit: 3
+  
+  # Marine-specific parameters - enhanced for better simulation
+  water_distortion_alpha: 60
+  water_distortion_sigma: 5
+  particles_density: 0.15
+  color_cast_strength: 0.4
+  
+  # Probabilities
+  geometric_prob: 0.8
+  color_prob: 0.8
+  noise_prob: 0.6
+  underwater_prob: 0.7
+
+batch_processing:
+  # Processing parameters - adjusted for advanced techniques
+  num_workers: 4  # Reduced due to computational intensity of advanced methods
+  batch_size: 16  # Smaller batch size for memory efficiency
+  enable_multiprocessing: true
+  
+  # File handling
+  supported_formats: [".jpg", ".jpeg", ".png", ".tiff", ".bmp"]
+  output_format: ".jpg"
+  output_quality: 95
+  
+  # Processing options
+  apply_preprocessing: true
+  apply_augmentation: false
+  num_augmentations: 2
+  save_original: false
+  
+  # Output organization
+  create_subdirs: true
+  subdir_names:
+    original: "original"
+    preprocessed: "preprocessed" 
+    augmented: "augmented"
+  
+  # Error handling
+  continue_on_error: true
+  save_error_log: true
+  
+  # Progress tracking
+  show_progress: true
+  save_processing_report: true

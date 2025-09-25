@@ -1,0 +1,102 @@
+# Marine Fouling Optimized Configuration
+# This configuration is specifically tuned for underwater marine fouling images
+
+processing_mode: "full_pipeline"
+logging_level: "INFO"
+random_seed: 42
+
+preprocessing:
+  # CLAHE parameters - optimized for underwater contrast
+  clahe_clip_limit: 4.0
+  clahe_tile_grid_size: [6, 6]
+  
+  # Retinex parameters - adjusted for marine lighting conditions
+  retinex_sigma_list: [20, 100, 300]
+  retinex_low_clip: 0.01
+  retinex_high_clip: 0.99
+  
+  # Noise reduction
+  gaussian_blur_sigma: 0.8
+  bilateral_d: 9
+  bilateral_sigma_color: 75
+  bilateral_sigma_space: 75
+  
+  # Enhancement parameters
+  gamma_correction: 1.3
+  sharpening_strength: 0.7
+  
+  # Output parameters
+  output_size: null  # Keep original size
+  normalize_output: true
+  
+  # Processing order optimized for marine images
+  preprocessing_order:
+    - "noise_reduction"
+    - "color_correction"
+    - "lighting_enhancement"
+    - "contrast_enhancement" 
+    - "sharpening"
+    - "resize"
+    - "normalization"
+
+augmentation:
+  # Geometric transformations
+  rotate_limit: 30
+  shift_limit: 0.1
+  scale_limit: 0.2
+  distortion_limit: 0.1
+  
+  # Color and lighting
+  brightness_limit: 0.3
+  contrast_limit: 0.3
+  saturation_limit: 0.2
+  hue_shift_limit: 20
+  
+  # Noise and blur
+  gaussian_noise_var: [10.0, 50.0]
+  motion_blur_limit: 7
+  gaussian_blur_limit: 3
+  
+  # Marine-specific parameters
+  water_distortion_alpha: 60
+  water_distortion_sigma: 5
+  particles_density: 0.15
+  color_cast_strength: 0.4
+  
+  # Probabilities
+  geometric_prob: 0.8
+  color_prob: 0.8
+  noise_prob: 0.6
+  underwater_prob: 0.7
+
+batch_processing:
+  # Processing parameters
+  num_workers: 6
+  batch_size: 32
+  enable_multiprocessing: true
+  
+  # File handling
+  supported_formats: [".jpg", ".jpeg", ".png", ".tiff", ".bmp"]
+  output_format: ".jpg"
+  output_quality: 90
+  
+  # Processing options
+  apply_preprocessing: true
+  apply_augmentation: false
+  num_augmentations: 2
+  save_original: false
+  
+  # Output organization
+  create_subdirs: true
+  subdir_names:
+    original: "original"
+    preprocessed: "preprocessed" 
+    augmented: "augmented"
+  
+  # Error handling
+  continue_on_error: true
+  save_error_log: true
+  
+  # Progress tracking
+  show_progress: true
+  save_processing_report: true
